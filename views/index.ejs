@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-scale, initial-scale=1.0">
+  <title>Image Gallery - AUDIST HERBS</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="header-container">
+      <h1>AUDIST HERBS</h1>
+    </div>
+  </header>
+
+  <!-- Main Content Section -->
+  <div class="container">
+    <h2>For the image source download, contact the mail provided <a href="#foots">here</a></h2>
+    <div class="gallery">
+      <% function renderFolder(folder) { %>
+        <div class="folder">
+          <h2><%= folder.name %></h2>
+          <div class="subfolders">
+            <% folder.subfolders.forEach(subfolder => { %>
+              <details class="subfolder-details">
+                <summary><h3><%= subfolder.name %></h3></summary>
+                <div class="images">
+                  <% subfolder.subfolders.forEach(image => { %>
+                    <div class="image">
+                      <img src="<%= image.path %>" alt="<%= image.name %>" />
+                    </div>
+                  <% }) %>
+                </div>
+              </details>
+            <% }) %>
+          </div>
+        </div>
+      <% } %>
+      <% folderStructure.forEach(folder => { renderFolder(folder); }) %>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer id="foots">
+    <div class="footer-container">
+      <p>&copy; 2025 AUDIST HERBS. All rights reserved.</p>
+      <p>Contact us at: <a href="mailto:info@audistherbs.com">sskumar2k@gmail.com</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
