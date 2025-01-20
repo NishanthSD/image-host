@@ -6,7 +6,7 @@ const port = 3000;
 
 // Serve static files (images)
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/images', express.static(path.join(__dirname, 'res_images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Function to get folder structure
 function getFolderStructure(dir) {

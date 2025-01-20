@@ -2,9 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-scale, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Gallery - AUDIST HERBS</title>
   <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* Carousel Styles */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      max-height: 500px;
+      margin: auto;
+      overflow: hidden;
+    }
+    .carousel-images {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-images img {
+      width: 100%;
+      flex-shrink: 0;
+    }
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+    .carousel-controls button {
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .carousel-controls button:hover {
+      background: rgba(0, 0, 0, 0.7);
+    }
+  </style>
 </head>
 <body>
   <!-- Header Section -->
@@ -25,12 +62,16 @@
             <% folder.subfolders.forEach(subfolder => { %>
               <details class="subfolder-details">
                 <summary><h3><%= subfolder.name %></h3></summary>
-                <div class="images">
-                  <% subfolder.subfolders.forEach(image => { %>
-                    <div class="image">
+                <div class="carousel">
+                  <div class="carousel-images" id="carousel-<%= subfolder.name %>">
+                    <% subfolder.subfolders.forEach(image => { %>
                       <img src="<%= image.path %>" alt="<%= image.name %>" />
-                    </div>
-                  <% }) %>
+                    <% }) %>
+                  </div>
+                  <div class="carousel-controls">
+                    <button onclick="prevSlide('carousel-<%= subfolder.name %>')">❮</button>
+                    <button onclick="nextSlide('carousel-<%= subfolder.name %>')">❯</button>
+                  </div>
                 </div>
               </details>
             <% }) %>
@@ -49,5 +90,32 @@
     </div>
   </footer>
 
+  <!-- Carousel Script -->
+  <script>
+    function nextSlide(carouselId) {
+      const carousel = document.getElementById(carouselId);
+      const images = carousel.querySelectorAll('img');
+      const currentTransform = getComputedStyle(carousel).transform;
+      const currentTranslateX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
+      const imageWidth = images[0].clientWidth;
+      const maxTranslateX = -(images.length - 1) * imageWidth;
+
+      if (currentTranslateX > maxTranslateX) {
+        carousel.style.transform = `translateX(${currentTranslateX - imageWidth}px)`;
+      }
+    }
+
+    function prevSlide(carouselId) {
+      const carousel = document.getElementById(carouselId);
+      const images = carousel.querySelectorAll('img');
+      const currentTransform = getComputedStyle(carousel).transform;
+      const currentTranslateX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
+      const imageWidth = images[0].clientWidth;
+
+      if (currentTranslateX < 0) {
+        carousel.style.transform = `translateX(${currentTranslateX + imageWidth}px)`;
+      }
+    }
+  </script>
 </body>
 </html>
